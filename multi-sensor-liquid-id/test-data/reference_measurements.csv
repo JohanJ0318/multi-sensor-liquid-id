@@ -1,0 +1,36 @@
+label,conductivity_ms_cm,density_g_ml,temperature_c
+Distilled Water,0.05,0.998,22.1
+Distilled Water,0.04,0.997,22.3
+Distilled Water,0.06,0.998,22.0
+Distilled Water,0.05,0.999,21.9
+Distilled Water,0.04,0.998,22.2
+Saltwater (3.5%),50.20,1.025,22.0
+Saltwater (3.5%),50.50,1.026,22.1
+Saltwater (3.5%),49.80,1.024,22.3
+Saltwater (3.5%),50.10,1.025,21.8
+Saltwater (3.5%),50.40,1.025,22.2
+Isopropyl Alcohol,0.01,0.786,22.0
+Isopropyl Alcohol,0.01,0.785,22.1
+Isopropyl Alcohol,0.02,0.787,21.9
+Isopropyl Alcohol,0.01,0.786,22.2
+Isopropyl Alcohol,0.01,0.785,22.0
+Vinegar,1.50,1.006,22.1
+Vinegar,1.48,1.005,22.0
+Vinegar,1.52,1.007,22.3
+Vinegar,1.49,1.006,22.2
+Vinegar,1.51,1.006,21.9
+Olive Oil,0.00,0.917,22.0
+Olive Oil,0.00,0.916,22.1
+Olive Oil,0.00,0.918,22.2
+Olive Oil,0.00,0.917,21.9
+Olive Oil,0.00,0.916,22.0
+Ethanol (70%),0.80,0.868,22.1
+Ethanol (70%),0.78,0.867,22.0
+Ethanol (70%),0.82,0.869,22.3
+Ethanol (70%),0.79,0.868,22.2
+Ethanol (70%),0.81,0.868,21.9
+Milk,4.50,1.032,22.0
+Milk,4.48,1.031,22.1
+Milk,4.52,1.033,22.3
+Milk,4.49,1.032,22.2
+Milk,4.51,1.032,21.9

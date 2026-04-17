@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- STM32 USB CDC Virtual COM Port -->
+    <!-- VID 0x0483 = STMicroelectronics, PID 0x5740 = CDC device -->
+    <usb-device vendor-id="1155" product-id="22336" />
+
+    <!-- Generic CDC/ACM devices (fallback for development) -->
+    <usb-device class="2" subclass="2" protocol="1" />
+</resources>

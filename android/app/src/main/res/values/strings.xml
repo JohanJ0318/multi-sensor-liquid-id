@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Liquid ID</string>
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_results">Results</string>
+    <string name="nav_compare">Compare</string>
+    <string name="status_connected">Connected</string>
+    <string name="status_disconnected">Disconnected</string>
+    <string name="status_connecting">Connecting…</string>
+    <string name="status_error">Connection Error</string>
+    <string name="mode_identification">Identification Mode</string>
+    <string name="mode_reference">Reference Collection Mode</string>
+    <string name="label_conductivity">Conductivity</string>
+    <string name="label_density">Mass</string>
+    <string name="label_temperature">Temperature</string>
+    <string name="unit_conductivity">µS/cm</string>
+    <string name="unit_density">g</string>
+    <string name="unit_temperature">°C</string>
+    <string name="fab_measure">Start Measurement</string>
+    <string name="fab_reset">Reset Device</string>
+    <string name="model_knn">k-Nearest Neighbors</string>
+    <string name="model_nc">Nearest Centroid</string>
+    <string name="models_agree">Models Agree ✓</string>
+    <string name="models_disagree">Models Disagree ✗</string>
+    <string name="export_csv">Export CSV</string>
+    <string name="export_json">Export JSON</string>
+    <string name="session_logging">Session Logging</string>
+    <string name="unknown_substance">Unknown</string>
+    <string name="invalid_measurement">Invalid</string>
+    <string name="no_data">No measurement yet</string>
+    <string name="connect_device">Connect device via USB</string>
+    <string name="nav_feature">Feature Space</string>
+    <string name="feature_space_title">Feature Space</string>
+    <string name="feature_space_subtitle">Where does your sample land among reference clusters?</string>
+    <string name="feature_axis_label">← Conductivity (log₁₀ µS/cm)  ·  Y: Mass (g) →</string>
+    <string name="feature_no_data">Start a measurement or enable Demo Mode to see your sample plotted against the reference clusters.</string>
+    <string name="feature_temperature_prefix">T = </string>
+</resources>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/dashboardFragment"
+        android:icon="@drawable/ic_nav_dashboard"
+        android:title="@string/nav_dashboard" />
+
+    <item
+        android:id="@+id/resultsFragment"
+        android:icon="@drawable/ic_nav_results"
+        android:title="@string/nav_results" />
+
+    <item
+        android:id="@+id/modelComparisonFragment"
+        android:icon="@drawable/ic_nav_compare"
+        android:title="@string/nav_compare" />
+
+    <item
+        android:id="@+id/featureSpaceFragment"
+        android:icon="@drawable/ic_nav_feature"
+        android:title="@string/nav_feature" />
+
+</menu>

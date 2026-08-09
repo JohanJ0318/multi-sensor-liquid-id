@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_background"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tv_screen_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/nav_results"
+        android:textColor="@color/color_on_surface"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:paddingBottom="12dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Model toggle -->
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/toggle_model"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:singleSelection="true"
+        app:selectionRequired="true"
+        app:layout_constraintTop_toBottomOf="@id/tv_screen_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_knn"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="kNN"
+            android:textColor="@color/color_on_surface"
+            android:checked="true" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_nc"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nearest Centroid"
+            android:textColor="@color/color_on_surface" />
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    <!-- Model label -->
+    <TextView
+        android:id="@+id/tv_model_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/model_knn"
+        android:textColor="@color/color_primary"
+        android:textSize="13sp"
+        app:layout_constraintTop_toBottomOf="@id/toggle_model"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp" />
+
+    <!-- Substance name — large, prominent -->
+    <TextView
+        android:id="@+id/tv_substance_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_data"
+        android:textColor="@color/color_on_surface"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/tv_model_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp" />
+
+    <!-- Circular confidence indicator -->
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progress_confidence"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:progress="0"
+        app:indicatorSize="120dp"
+        app:trackThickness="10dp"
+        app:indicatorColor="@color/color_primary"
+        app:trackColor="@color/color_card"
+        app:layout_constraintTop_toBottomOf="@id/tv_substance_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp" />
+
+    <!-- Confidence percentage, centered over the ring -->
+    <TextView
+        android:id="@+id/tv_confidence_percent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="—"
+        android:textColor="@color/color_on_surface"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="@id/progress_confidence"
+        app:layout_constraintBottom_toBottomOf="@id/progress_confidence"
+        app:layout_constraintStart_toStartOf="@id/progress_confidence"
+        app:layout_constraintEnd_toEndOf="@id/progress_confidence" />
+
+    <!-- Feature values card -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_features"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:cardBackgroundColor="@color/color_card"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp"
+        app:layout_constraintTop_toBottomOf="@id/progress_confidence"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/tv_conductivity_result"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Conductivity: —"
+                android:textColor="@color/color_conductivity"
+                android:textSize="15sp"
+                android:paddingBottom="8dp" />
+
+            <TextView
+                android:id="@+id/tv_density_result"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Mass: —"
+                android:textColor="@color/color_density"
+                android:textSize="15sp"
+                android:paddingBottom="8dp" />
+
+            <TextView
+                android:id="@+id/tv_temperature_result"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Temperature: —"
+                android:textColor="@color/color_temperature"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

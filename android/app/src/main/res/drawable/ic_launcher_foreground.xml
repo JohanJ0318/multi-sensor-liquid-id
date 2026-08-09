@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Liquid ID droplet icon, adapted from liquid-id-icon.svg -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <group
+        android:translateX="54"
+        android:translateY="60.75"
+        android:scaleX="0.422"
+        android:scaleY="0.422">
+
+        <!-- Droplet fill -->
+        <path
+            android:fillColor="#0AA6B9"
+            android:pathData="M0,-95 C20,-60 55,-18 55,8 A55,55 0 0 1 -55,8 C-55,-18 -20,-60 0,-95 Z" />
+
+        <!-- Concentric ridges, clipped to the droplet silhouette -->
+        <group>
+            <clip-path
+                android:pathData="M0,-95 C20,-60 55,-18 55,8 A55,55 0 0 1 -55,8 C-55,-18 -20,-60 0,-95 Z" />
+            <path
+                android:strokeColor="#FFFFFF"
+                android:strokeWidth="5"
+                android:pathData="M-10,-10 a10,10 0 1,0 20,0 a10,10 0 1,0 -20,0
+                                   M-20,-10 a20,20 0 1,0 40,0 a20,20 0 1,0 -40,0
+                                   M-30,-10 a30,30 0 1,0 60,0 a30,30 0 1,0 -60,0
+                                   M-40,-10 a40,40 0 1,0 80,0 a40,40 0 1,0 -80,0
+                                   M-50,-10 a50,50 0 1,0 100,0 a50,50 0 1,0 -100,0
+                                   M-60,-10 a60,60 0 1,0 120,0 a60,60 0 1,0 -120,0
+                                   M-70,-10 a70,70 0 1,0 140,0 a70,70 0 1,0 -140,0
+                                   M-80,-10 a80,80 0 1,0 160,0 a80,80 0 1,0 -160,0
+                                   M-90,-10 a90,90 0 1,0 180,0 a90,90 0 1,0 -180,0" />
+        </group>
+
+        <!-- Outline -->
+        <path
+            android:strokeColor="#06707D"
+            android:strokeWidth="3"
+            android:pathData="M0,-95 C20,-60 55,-18 55,8 A55,55 0 0 1 -55,8 C-55,-18 -20,-60 0,-95 Z" />
+
+    </group>
+</vector>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/dashboardFragment">
+
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.group17.liquidsensor.ui.dashboard.DashboardFragment"
+        android:label="@string/nav_dashboard" />
+
+    <fragment
+        android:id="@+id/resultsFragment"
+        android:name="com.group17.liquidsensor.ui.results.ResultsFragment"
+        android:label="@string/nav_results" />
+
+    <fragment
+        android:id="@+id/modelComparisonFragment"
+        android:name="com.group17.liquidsensor.ui.comparison.ModelComparisonFragment"
+        android:label="@string/nav_compare" />
+
+    <fragment
+        android:id="@+id/featureSpaceFragment"
+        android:name="com.group17.liquidsensor.ui.feature.FeatureSpaceFragment"
+        android:label="@string/nav_feature" />
+
+</navigation>

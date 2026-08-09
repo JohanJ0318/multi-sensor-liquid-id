@@ -1,0 +1,51 @@
+# ===== Android =====
+*.iml
+.gradle/
+local.properties
+.idea/
+android/build/
+android/app/build/
+android/app/release/
+android/captures/
+.cxx/
+.externalNativeBuild/
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+*.hprof
+
+# ===== STM32 / Firmware =====
+# NOTE: .cproject/.project/.mxproject and the .ioc are deliberately TRACKED --
+# STM32CubeIDE cannot open the project without them.
+firmware/Debug/
+firmware/Release/
+firmware/.settings/
+*.o
+*.d
+*.su
+*.elf
+*.bin
+*.hex
+*.map
+*.lst
+
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+venv/
+.venv/
+*.egg
+
+# ===== IDE / OS =====
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp

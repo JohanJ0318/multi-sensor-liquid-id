@@ -1,0 +1,14 @@
+<resources>
+    <color name="color_primary">#1565C0</color>
+    <color name="color_primary_dark">#003c8f</color>
+    <color name="color_surface">#1A1A2E</color>
+    <color name="color_background">#121212</color>
+    <color name="color_on_surface">#FFFFFF</color>
+    <color name="color_conductivity">#00E5FF</color>
+    <color name="color_density">#69F0AE</color>
+    <color name="color_temperature">#FF6D00</color>
+    <color name="color_agree">#2E7D32</color>
+    <color name="color_disagree">#C62828</color>
+    <color name="color_warning">#FF6D00</color>
+    <color name="color_card">#1E1E2E</color>
+</resources>

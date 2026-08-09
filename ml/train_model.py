@@ -56,14 +56,35 @@ ADC_FULL_SCALE = 4095.0
 COND_ADC_FLOOR = 0.5
 COND_RATIO_FLOOR = COND_ADC_FLOOR / (ADC_FULL_SCALE - COND_ADC_FLOOR)
 
-# Post-standardization feature weights. Classification runs on CONDUCTIVITY
-# ALONE: all five classes occupy distinct conductivity bands, and the load
-# cell drifts ±70 g between sessions — too unreliable to weight without
-# risking false UNKNOWNs once the class bands pack tighter (5 classes ->
-# rejection radius ~0.39). Mass is still measured, displayed, logged, and
-# plotted; it just doesn't drive the decision. Temperature likewise ignored.
-# If the load cell is repaired, raise the mass weight and retrain.
-FEATURE_WEIGHTS = [3.0, 0.0, 0.0]
+# Post-standardization feature weights: [conductivity, mass, temperature].
+#
+# Conductivity (3.0) does the work — it separates all six classes on its own
+# at 100% CV accuracy.
+#
+# Mass (0.25) contributes real density information: glycerin reads ~124 g and
+# isopropyl ~80 g against the ~100 g water group, which is genuine physics, not
+# an artifact. The weight is deliberately small because the load cell drifts
+# up to ±70 g between sessions. Measured drift tolerance on the banked data:
+#
+#     mass weight   accuracy @ ±40 g   accuracy @ ±70 g
+#        0.25            100%               100%
+#        0.50            100%              83.9%
+#        1.00           80.6/64.5%        64.5/48.4%
+#
+# 0.25 is the largest weight that survives the full ±70 g drift intact, and it
+# nudges the unknown-rejection radius up (0.286 -> 0.290). Raise it once the
+# load-cell mount and amplifier are fixed.
+#
+# Temperature stays at 0.0 ON PURPOSE. Every liquid was measured at room
+# temperature (19.6-21.1 C) in a single session each, so within-class spread is
+# 0.02-0.15 C while between-class spread is ~1.5 C. That makes ambient
+# temperature a near-perfect *session* fingerprint — it classifies at 72% on its
+# own — but it carries no information about liquid identity, and the firmware
+# already compensates conductivity to 25 C. Weighting it looks free in
+# cross-validation and then fails in a warmer room: at [3, 1, 1] a +2 C ambient
+# shift drops accuracy to 32%. Only give temperature weight after collecting
+# each liquid across a real temperature range.
+FEATURE_WEIGHTS = [3.0, 0.25, 0.0]
 
 
 # ------------------------------------------------------------------

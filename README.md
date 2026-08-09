@@ -37,7 +37,7 @@ saturated salt water, tap water.
 | Cross-validation | 100% mean, 5-fold, stable across k = 1, 3, 5, 7, 9 |
 | Time to result | **~5 s**, Start → classification on screen |
 | Dataset | 123 measurements, 6 classes, 75/25 stratified split |
-| On-device model | k = 1, 3-feature space, ~90 reference points in flash |
+| On-device model | k = 1, 3-feature space, 92 reference points in flash |
 
 Reproduce the accuracy figures from the data in this repo with the command under
 [Retraining](#retraining).
@@ -51,18 +51,37 @@ Caveats worth more than the headline number:
   between days from DC electrode polarization, so cross-day generalization is weaker than
   these numbers suggest.
 - The ~5 s figure is dominated by the sensor-averaging window. The kNN and nearest-centroid
-  math over ~90 points is negligible on a 170 MHz Cortex-M4F.
+  math over 92 points is negligible on a 170 MHz Cortex-M4F.
 
-### On "sensor fusion"
+### What actually drives the decision
 
-All three sensors are sampled, displayed, logged and exported — but **classification
-currently runs on conductivity alone**. The post-scaler feature weights are
-`[3.0, 0.0, 0.0]`: mass was deliberately zeroed after the load cell was found to drift
-±70 g between sessions, which caused false UNKNOWN rejections once the class bands packed
-tighter at six classes. Temperature compensates the conductivity reading to 25 °C rather
-than feeding the classifier. Restoring mass to the decision is a hardware fix — load-cell
-mount and amplifier — not a model change; the training script re-weights and retrains in
-one line.
+Post-scaler feature weights are `[3.0, 0.25, 0.0]` — conductivity, mass, temperature.
+
+**Conductivity** carries the classification; it separates all six liquids on its own at
+100% cross-validated accuracy.
+
+**Mass** contributes real density information — glycerin reads ~124 g and isopropyl ~80 g
+against the ~100 g water group. Its weight is deliberately small because the load cell
+drifts up to ±70 g between sessions, and the weight was chosen by measuring how much drift
+each setting survives:
+
+| mass weight | accuracy @ ±40 g | accuracy @ ±70 g |
+|---|---|---|
+| 0.25 | 100% | **100%** |
+| 0.50 | 100% | 83.9% |
+| 1.00 | 80.6% / 64.5% | 64.5% / 48.4% |
+
+0.25 is the largest weight that survives the full observed drift intact, and it widens the
+unknown-rejection radius slightly (0.286 → 0.290).
+
+**Temperature is weighted zero on purpose.** Every liquid was measured at room temperature
+in a single session each, so within-class spread is 0.02–0.15 °C while between-class spread
+is ~1.5 °C. Ambient temperature is therefore an excellent *session* fingerprint — it
+classifies at 72% by itself — while carrying no information about liquid identity, and the
+firmware already compensates conductivity to 25 °C. Weighting it looks free in
+cross-validation and then fails in a warmer room: at `[3, 1, 1]`, a +2 °C ambient shift
+drops accuracy to 32%. Giving temperature a real vote requires collecting each liquid
+across a genuine temperature range, not reweighting the existing data.
 
 ---
 
@@ -164,13 +183,7 @@ app's `CLASS_NAMES` list must stay in that same order as the header.
 
 ## Team
 
-| Name | Role |
-|---|---|
-| Johan Johnson | Computer Engineering |
-| Frederick Hornberger | Computer Engineering |
-| John McGuire | Computer Engineering |
-
-**Advisors:** Dr. Reza Abdolvand · Dr. Saleem Sahawneh · Dr. Mike Maddox
+Johan Johnson · John McGuire · Frederick Hornberger
 
 ## License
 

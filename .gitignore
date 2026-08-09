@@ -32,6 +32,11 @@ firmware/.settings/
 *.lst
 
 # ===== Python =====
+# Training outputs. The authoritative generated header is committed at
+# firmware/Core/Inc/model_params.h -- keeping a second copy here is what let
+# the repo and the flashed device drift out of sync before.
+ml/model_params.h
+ml/liquid_model.joblib
 __pycache__/
 *.py[cod]
 *.egg-info/

@@ -2,6 +2,8 @@
 
 > **UCF Senior Design — Group 17 | Spring/Summer 2026**
 
+[![Verify model](https://github.com/JohanJ0318/multi-sensor-liquid-id/actions/workflows/verify-model.yml/badge.svg)](https://github.com/JohanJ0318/multi-sensor-liquid-id/actions/workflows/verify-model.yml)
+
 An embedded system that identifies liquids in real time. A hand-built probe measures
 conductivity, mass and temperature; an **STM32G431KBU6** runs the classifier **on-device** —
 no cloud, no phone-side inference — and reports the result on an onboard OLED and over BLE
@@ -87,6 +89,25 @@ across a genuine temperature range, not reweighting the existing data.
 
 ## How it works
 
+The whole loop, from collecting data to running the model on the device and back:
+
+```mermaid
+flowchart LR
+    subgraph Device
+        P[Probe: conductivity,<br/>load cell, DS18B20] --> M[STM32G431KBU6<br/>feature pipeline in C]
+        M --> C[kNN + nearest centroid<br/>model_params.h in flash]
+        C --> O[SH1106 OLED]
+    end
+    C -->|RN4871 BLE| A[Android app<br/>live result + charts]
+    A -->|session CSV export| D[(ml/data/)]
+    D --> T[train_model.py<br/>scale, weight, pick k,<br/>held-out + 5-fold CV]
+    T -->|generates| H[model_params.h]
+    H -->|copy + reflash| M
+    T -.->|verify_model.sh in CI| H
+```
+
+At run time the path is just the top row:
+
 ```
 probe ─> STM32G431KBU6 ─> feature vector ─> kNN + nearest centroid ─┬─> SH1106 OLED
                                             (model_params.h, flash) └─> RN4871 BLE ─> Android app
@@ -153,12 +174,16 @@ Export a session from the app, pull the CSV into `ml/data/`, then:
 
 ```bash
 cd ml
+pip install -r requirements.txt
 python train_model.py coke=data/coke_room.csv distilled=data/distilledwater_room.csv glycerin=data/glycerin_room.csv isopropyl=data/isopropyl_room.csv salt_water=data/saltwater_room.csv tap_water=data/tapwater_room.csv
 ```
 
 This writes `liquid_model.joblib` and `model_params.h`. Copy the header into
 `firmware/Core/Inc/` and reflash. Class indices are assigned **alphabetically**, so the
 app's `CLASS_NAMES` list must stay in that same order as the header.
+
+To confirm the committed header still matches the data and training code, run
+`bash ml/verify_model.sh`. CI runs the same check on every change under `ml/`.
 
 ## Hardware
 
@@ -171,9 +196,23 @@ app's `CLASS_NAMES` list must stay in that same order as the header.
 | Display | SH1106 128×64 OLED | On-device result readout |
 | Wireless | RN4871 | BLE serial link to the app |
 
+## What broke, and how we found it
+
+Most of the design decisions above came from something going wrong first.
+
+| Problem | How it showed up | What we changed |
+|---|---|---|
+| Converting conductivity to mS/cm made drift worse | Readings from the same liquid spread far more after conversion than in raw ADC counts; near the conversion's asymptote, electrode drift was amplified 6–17× | Classify on `log10` of the raw divider ratio instead of mS/cm |
+| 0-count conductivity readings | Low-conductivity liquids sometimes read 0 counts, which sends the log feature to −∞ | Floor the divider ratio at `COND_RATIO_FLOOR` so those readings stay finite and cluster tightly |
+| Temperature looked useful but wasn't | Temperature alone classified at 72%, which was suspicious; each liquid had been measured in a single room-temperature session, so it was fingerprinting the session, not the liquid. Simulating a +2 °C room at weights `[3, 1, 1]` dropped accuracy to 32% | Weight temperature at 0 and rely on firmware compensation of conductivity to 25 °C |
+| Load cell drift between sessions | Mass for the same liquid moved by up to ±70 g between days | Swept the mass weight against simulated drift (table above) and kept 0.25, the largest weight that survives the full observed drift |
+| Coffee landed on top of Coke | Both sit near the probe's ~2 mS/cm ceiling, where DC electrode polarization makes consecutive readings differ by ~9% | Dropped coffee as a class rather than ship a classifier that guesses |
+| The repo and the flashed device disagreed | A second copy of the generated header in `ml/` let the committed model drift from what was actually on the board | Made `firmware/Core/Inc/model_params.h` the single source of truth, ignored the `ml/` copy in Git, and added `ml/verify_model.sh` plus a CI check |
+
 ## Known limitations
 
-- The load cell drifts between sessions and is excluded from the classification decision.
+- The load cell drifts between sessions, so mass gets only a small weight (0.25) in the
+  decision; conductivity does most of the work.
 - The conductivity probe is accurate to roughly 2 mS/cm; above that the response compresses
   and consecutive readings can differ by ~9% from DC electrode polarization. Coke sits near
   that ceiling — which is why coffee was tested and **rejected** as a class: it lands on top
